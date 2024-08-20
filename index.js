@@ -38,26 +38,26 @@ app.get('/api/users', (req, res) => {
 
 app.post('/api/users', (req, res) => {
   const { first_Name, last_Name, gender, birth_Date, email, password } = req.body;
-  db.query('INSERT INTO users (first_Name, last_Name, gender, birth_Date, email, password, created_At, updated_At) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [first_Name, last_Name, gender, birth_Date, email, password, new Date(), new Date()], (err, result) => {
+  db.query('INSERT INTO users (first_Name, last_Name, gender, birth_Date, email, password) VALUES (?, ?, ?, ?, ?, ?)', [first_Name, last_Name, gender, birth_Date, email, password ], (err, result) => {
     if (err) {
       console.error('Error executing query: ' + err.stack);
       res.status(400).send('Error creating user');
       return;
     }
-    res.status(201).send('User created successfully');
+    res.status(201).send(req.body);
   });
 });
 
 app.put('/api/users/:id', (req, res) => {
   const { first_Name, last_Name, gender, birth_Date, email, password } = req.body;
   const userId = req.params.id;
-  db.query('UPDATE users SET first_Name = ?, last_Name = ?, gender = ?, birth_Date = ?, email = ?, password = ?, updated_At = ? WHERE id = ?', [first_Name, last_Name, gender, birth_Date, email, password, new Date(), userId], (err, result) => {
+  db.query('UPDATE users SET first_Name = ?, last_Name = ?, gender = ?, birth_Date = ?, email = ?, password = ? WHERE id = ?', [first_Name, last_Name, gender, birth_Date, email, password, userId], (err, result) => {
     if (err) {
       console.error('Error executing query: ' + err.stack);
       res.status(400).send('Error updating user');
       return;
     }
-    res.send('User updated successfully');
+    res.send(req.body);
   });
 });
 
